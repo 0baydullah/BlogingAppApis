@@ -1,6 +1,7 @@
 package com.obaydullah.blogingappapis.controllers;
 
 
+import com.obaydullah.blogingappapis.payloads.ApiResponse;
 import com.obaydullah.blogingappapis.payloads.PostDto;
 import com.obaydullah.blogingappapis.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,41 @@ public class PostController {
     ){
         List<PostDto> posts = this.postService.getPostsByCategory(categoryId);
         return new ResponseEntity<List<PostDto>>(posts,HttpStatus.OK);
+    }
+
+    /// get all posts
+    @GetMapping("/posts")
+    public ResponseEntity<List<PostDto>> getAllPost(
+            @RequestParam(value = "pageNumber",defaultValue = "0",required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize",defaultValue = "3",required = false) Integer pageSize
+    ){
+        List<PostDto> allPost = this.postService.getAllPost(pageNumber,pageSize);
+        return new ResponseEntity<List<PostDto>>(allPost,HttpStatus.OK);
+    }
+
+    ///get post details by id
+
+    @GetMapping("/posts/{postId}")
+    public ResponseEntity<PostDto> getPostById(@PathVariable Integer postId){
+        PostDto post = this.postService.getPostById(postId);
+        return new ResponseEntity<PostDto>(post,HttpStatus.OK);
+    }
+
+    /// update post
+    @PutMapping("posts/{postId}")
+    public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto , @PathVariable Integer postId){
+
+        PostDto updatePost = this.postService.updatePost(postDto,postId);
+        return new ResponseEntity<PostDto>(updatePost,HttpStatus.OK);
+
+    }
+
+    /// delete post
+    @DeleteMapping("posts/{postId}")
+    public ApiResponse deletePost(@PathVariable Integer postId){
+
+        this.postService.deletePost(postId);
+        return new ApiResponse("Post is successfully deleted!!",true);
     }
 
 }
