@@ -5,6 +5,7 @@ import com.obaydullah.blogingappapis.entities.Post;
 import com.obaydullah.blogingappapis.entities.User;
 import com.obaydullah.blogingappapis.exceptions.ResourceNotFoundException;
 import com.obaydullah.blogingappapis.payloads.PostDto;
+import com.obaydullah.blogingappapis.payloads.PostResponse;
 import com.obaydullah.blogingappapis.repositories.CategoryRepo;
 import com.obaydullah.blogingappapis.repositories.PostRepo;
 import com.obaydullah.blogingappapis.repositories.UserRepo;
@@ -73,7 +74,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getAllPost(Integer pageNumber , Integer pageSize) {
+    public PostResponse getAllPost(Integer pageNumber , Integer pageSize) {
 
 
         Pageable p = PageRequest.of(pageNumber,pageSize);
@@ -81,7 +82,16 @@ public class PostServiceImpl implements PostService {
         List<Post> allPosts = pagePost.getContent();
 
         List<PostDto> postDtos = allPosts.stream().map((post -> this.modelMapper.map(post,PostDto.class))).collect(Collectors.toList());
-        return postDtos;
+
+        PostResponse postResponse = new PostResponse();
+        postResponse.setContent(postDtos);
+        postResponse.setPageNumber(pagePost.getNumber());
+        postResponse.setPageSize(pagePost.getSize());
+        postResponse.setTotalElement((int)pagePost.getTotalElements());
+        postResponse.setTotalPages(pagePost.getTotalPages());
+        postResponse.setLastPage(pagePost.isLast());
+
+        return postResponse;
     }
 
     @Override

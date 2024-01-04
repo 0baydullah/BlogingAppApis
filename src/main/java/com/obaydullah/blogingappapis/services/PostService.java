@@ -2,6 +2,7 @@ package com.obaydullah.blogingappapis.services;
 
 import com.obaydullah.blogingappapis.payloads.PostDto;
 import com.obaydullah.blogingappapis.entities.Post;
+import com.obaydullah.blogingappapis.payloads.PostResponse;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface PostService {
     void deletePost (Integer postId);
 
     ///     get all post
-    List<PostDto> getAllPost (Integer pageNumber , Integer pageSize);
+    PostResponse getAllPost (Integer pageNumber , Integer pageSize);
 
     ///     get single post
     PostDto getPostById (Integer postId);
