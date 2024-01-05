@@ -33,29 +33,39 @@ public class PostController {
 
     /// get by user
     @GetMapping("/user/{userId}/posts")
-    public ResponseEntity<List<PostDto>> getPostByUser(
-         @PathVariable Integer userId
+    public ResponseEntity<PostResponse> getPostByUser(
+         @PathVariable Integer userId,
+         @RequestParam(value = "pageNumber",defaultValue = "0",required = false) Integer pageNumber,
+         @RequestParam(value = "pageSize",defaultValue = "5",required = false) Integer pageSize,
+         @RequestParam(value = "sortBy",defaultValue = "postId",required = false) String sortBy,
+         @RequestParam(value = "dir",defaultValue = "asc",required = false) String dir
     ){
-        List<PostDto> posts = this.postService.getPostsByUser(userId);
-        return new ResponseEntity<List<PostDto>>(posts,HttpStatus.OK);
+        PostResponse posts = this.postService.getPostsByUser(userId,pageNumber,pageSize,sortBy,dir);
+        return new ResponseEntity<PostResponse>(posts,HttpStatus.OK);
     }
 
     /// get by category
     @GetMapping("/category/{categoryId}/posts")
-    public ResponseEntity<List<PostDto>> getPostByCategory(
-            @PathVariable Integer categoryId
+    public ResponseEntity<PostResponse> getPostByCategory(
+            @PathVariable Integer categoryId,
+             @RequestParam(value = "pageNumber",defaultValue = "0",required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize",defaultValue = "5",required = false) Integer pageSize,
+            @RequestParam(value = "sortBy",defaultValue = "postId",required = false) String sortBy,
+            @RequestParam(value = "dir",defaultValue = "asc",required = false) String dir
     ){
-        List<PostDto> posts = this.postService.getPostsByCategory(categoryId);
-        return new ResponseEntity<List<PostDto>>(posts,HttpStatus.OK);
+        PostResponse postResponse= this.postService.getPostsByCategory(categoryId,pageNumber,pageSize,sortBy,dir);
+        return new ResponseEntity<PostResponse>(postResponse,HttpStatus.OK);
     }
 
     /// get all posts
     @GetMapping("/posts")
     public ResponseEntity<PostResponse> getAllPost(
             @RequestParam(value = "pageNumber",defaultValue = "0",required = false) Integer pageNumber,
-            @RequestParam(value = "pageSize",defaultValue = "3",required = false) Integer pageSize
+            @RequestParam(value = "pageSize",defaultValue = "5",required = false) Integer pageSize,
+            @RequestParam(value = "sortBy",defaultValue = "postId",required = false) String sortBy,
+            @RequestParam(value = "dir",defaultValue = "asc",required = false) String dir
     ){
-        PostResponse postResponse = this.postService.getAllPost(pageNumber,pageSize);
+        PostResponse postResponse = this.postService.getAllPost(pageNumber,pageSize,sortBy,dir);
         return new ResponseEntity<PostResponse>(postResponse,HttpStatus.OK);
     }
 

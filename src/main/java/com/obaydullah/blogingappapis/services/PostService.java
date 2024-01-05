@@ -17,20 +17,17 @@ public interface PostService {
     void deletePost (Integer postId);
 
     ///     get all post
-    PostResponse getAllPost (Integer pageNumber , Integer pageSize);
+    PostResponse getAllPost (Integer pageNumber , Integer pageSize,String sortBy,String dir);
 
     ///     get single post
     PostDto getPostById (Integer postId);
 
     ///     get all post by category
-    List<PostDto> getPostsByCategory ( Integer categoryId);
+    PostResponse getPostsByCategory ( Integer categoryId,Integer pageNumber , Integer pageSize,String sortBy,String dir);
 
     ///     get all post by user
-    List<PostDto> getPostsByUser ( Integer userId);
+    PostResponse getPostsByUser ( Integer userId,Integer pageNumber, Integer pageSize,String sortBy,String dir);
 
     ///     search post
     List<Post> searchPosts ( String keyword);
-
-
-
 }
