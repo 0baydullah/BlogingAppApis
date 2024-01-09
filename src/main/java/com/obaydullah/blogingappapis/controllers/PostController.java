@@ -5,13 +5,19 @@ import com.obaydullah.blogingappapis.config.AppConstants;
 import com.obaydullah.blogingappapis.payloads.ApiResponse;
 import com.obaydullah.blogingappapis.payloads.PostDto;
 import com.obaydullah.blogingappapis.payloads.PostResponse;
+import com.obaydullah.blogingappapis.services.FileService;
 import com.obaydullah.blogingappapis.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/")
@@ -19,6 +25,10 @@ public class PostController {
 
     @Autowired
     private PostService postService;
+    @Autowired
+    private FileService fileService;
+    @Value("${project.image}")
+    private String path;
 
     /// create
     @PostMapping("/user/{userId}/category/{categoryId}/posts")
@@ -104,5 +114,23 @@ public class PostController {
         return new ResponseEntity<List<PostDto>>(result,HttpStatus.OK);
     }
 
+
+    /// post image upload
+
+    @PostMapping("post/image/upload/{postId}")
+    public ResponseEntity<PostDto> uploadPostImage(
+            @RequestParam("image")MultipartFile image,
+            @PathVariable Integer postId
+            ) throws IOException {
+
+        PostDto postDto = this.postService.getPostById(postId);
+
+        String fileName = this.fileService.uploadImage(path,image);
+
+        postDto.setImageName(fileName);
+        PostDto updatePost = this.postService.updatePost(postDto,postId);
+        return  new ResponseEntity<PostDto>(updatePost,HttpStatus.OK);
+
+    }
 
 }
