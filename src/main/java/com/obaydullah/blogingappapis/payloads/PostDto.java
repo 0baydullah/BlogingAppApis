@@ -1,6 +1,7 @@
 package com.obaydullah.blogingappapis.payloads;
 
 import com.obaydullah.blogingappapis.entities.Category;
+import com.obaydullah.blogingappapis.entities.Comment;
 import com.obaydullah.blogingappapis.entities.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,8 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -21,5 +24,7 @@ public class PostDto {
     private Date addedDate;
     private UserDto user;
     private CategoryDto category;
+
+    private Set<Comment> comments = new HashSet<>();
 
 }
